@@ -25,7 +25,7 @@ type Attributes map[string]string
 func ParseAsHTML(input string) (*Element, error) {
 	err := validateHTML(input)
 	if err != nil {
-		return nil, errors.New("invalid html")
+		return nil, errors.New("invalid html: " + input)
 	}
 	rootNode, err := html.Parse(strings.NewReader(input))
 	if err != nil {
