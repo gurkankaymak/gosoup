@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-const testHtml = `
+const testHTML = `
 	<div>
 		<div id="divId1" class="class1">
 		
@@ -17,14 +17,25 @@ const testHtml = `
 		</div>
 	</div>
 	`
-var rootElement, _ = Html(testHtml)
+
+var rootElement, _ = ParseAsHTML(testHTML)
 
 func TestHtml(t *testing.T) {
 	t.Run("should return error if the input is not a valid html", func(t *testing.T) {
-		testHtml := "<div></"
-		_, err := Html(testHtml)
+		invalidHTML := "<div></"
+		_, err := ParseAsHTML(invalidHTML)
 		if err == nil {
 			t.Errorf("did not get the expected invalid html error")
+		}
+	})
+
+	t.Run("should not return an error or nil element when the given html string is valid", func(t *testing.T) {
+		element, err := ParseAsHTML(testHTML)
+		if err != nil {
+			t.Fatalf("Unexpected error returned, err: %q", err)
+		}
+		if element == nil {
+			t.Errorf("element should not be 'nil' for a valid HTML")
 		}
 	})
 }
@@ -48,7 +59,7 @@ func TestFind(t *testing.T) {
 		if element.Data != expectedTag {
 			t.Errorf("wrong element tag, expected: %q, actual: %q", expectedTag, element.Data)
 		}
-		attributeValue, ok := element.getAttribute(expectedAttrKey)
+		attributeValue, ok := element.GetAttribute(expectedAttrKey)
 		if !ok || attributeValue != expectedAttrVal {
 			t.Errorf("expected attribute: %q: %q does not exist", expectedAttrKey, expectedAttrVal)
 		}
@@ -69,12 +80,10 @@ func TestFindAll(t *testing.T) {
 			if element.Data != expectedTag {
 				t.Errorf("wrong element tag, expected: %q, actual: %q", expectedTag, element.Data)
 			}
-			attributeValue, ok := element.getAttribute(expectedAttrKey)
+			attributeValue, ok := element.GetAttribute(expectedAttrKey)
 			if !ok || attributeValue != expectedAttrVal {
 				t.Errorf("expected attribute: %q: %q does not exist", expectedAttrKey, expectedAttrVal)
 			}
 		}
 	})
 }
-
-
