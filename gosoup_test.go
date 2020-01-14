@@ -20,15 +20,7 @@ const testHTML = `
 
 var rootElement, _ = ParseAsHTML(testHTML)
 
-func TestHtml(t *testing.T) {
-	t.Run("should return error if the input is not a valid html", func(t *testing.T) {
-		invalidHTML := "<div></"
-		_, err := ParseAsHTML(invalidHTML)
-		if err == nil {
-			t.Errorf("did not get the expected invalid html error")
-		}
-	})
-
+func TestParseAsHTML(t *testing.T) {
 	t.Run("should not return an error or nil element when the given html string is valid", func(t *testing.T) {
 		element, err := ParseAsHTML(testHTML)
 		if err != nil {

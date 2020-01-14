@@ -2,10 +2,7 @@ package gosoup
 
 import (
 	"bytes"
-	"encoding/xml"
-	"errors"
 	"golang.org/x/net/html"
-	"io"
 	"strings"
 )
 
@@ -20,13 +17,9 @@ type Element struct {
 // in example: Find("div", Attributes{"class":"exampleClass", "name":"exampleName"})
 type Attributes map[string]string
 
-// ParseAsHTML function Validates and parses the given string as html
+// ParseAsHTML function parses the given string as html
 // Returns an Element pointer to the root node and error if any error occurs
 func ParseAsHTML(input string) (*Element, error) {
-	err := validateHTML(input)
-	if err != nil {
-		return nil, errors.New("invalid html: " + input)
-	}
 	rootNode, err := html.Parse(strings.NewReader(input))
 	if err != nil {
 		return nil, err
@@ -34,29 +27,13 @@ func ParseAsHTML(input string) (*Element, error) {
 	return &Element{Node: rootNode}, nil
 }
 
-// html.Parse() does not return error on invalid htmls, so input is validated with encoding/xml
-func validateHTML(input string) error {
-	decoder := xml.NewDecoder(strings.NewReader(input))
-	decoder.Strict = false
-	decoder.AutoClose = xml.HTMLAutoClose
-	decoder.Entity = xml.HTMLEntity
-	for {
-		_, err := decoder.Token()
-		switch err {
-		case io.EOF:
-			return nil
-		case nil:
-		default:
-			return err
-		}
-	}
-}
-
 // Returns the string representation of the parse tree, it panics if there is an error in html.Render()
 func (element *Element) String() string {
 	var buffer bytes.Buffer
 	err := html.Render(&buffer, element.Node)
-	panic(err)
+	if err != nil {
+		panic(err)
+	}
 	return buffer.String()
 }
 
