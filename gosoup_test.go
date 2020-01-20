@@ -4,8 +4,8 @@ import (
 	"testing"
 )
 
-const testHTML = `
-	<div>
+const testHTML =
+	`<div name="outerDiv">
 		<div id="divId1" class="class1">
 		
 		</div>
@@ -15,8 +15,7 @@ const testHTML = `
 		<div id="divId3" class="class2">
 		
 		</div>
-	</div>
-	`
+	</div>`
 
 var rootElement, _ = ParseAsHTML(testHTML)
 
@@ -78,4 +77,35 @@ func TestFindAll(t *testing.T) {
 			}
 		}
 	})
+}
+
+func TestGetAttribute(t *testing.T) {
+	t.Run("should return the attribute of element with the given name", func(t *testing.T) {
+		firstDivElement := rootElement.FindByTag("div")
+		attribute, found := firstDivElement.GetAttribute("name")
+		if !found {
+			t.Fatal("could not find name attribute")
+		}
+		if attribute == "" {
+			t.Errorf("empty attribute value received, expected: 'outerDiv'")
+		}
+	})
+	t.Run("return empty string and false for the 'found' if the element with the given name does not exist", func(t *testing.T) {
+		firstDivElement := rootElement.FindByTag("div")
+		attribute, found := firstDivElement.GetAttribute("class")
+		if found {
+			t.Fatalf("wrong found value: %t, expected: 'false'", found)
+		}
+		if attribute != "" {
+			t.Errorf("wrong attribute value: %q, expected empty string", attribute)
+		}
+	})
+}
+
+func TestString(t *testing.T) {
+	firstDivElement := rootElement.FindByTag("div")
+	str := firstDivElement.String()
+	if str != testHTML {
+		t.Errorf("wrong string returned: %q, expected: %q", str, testHTML)
+	}
 }

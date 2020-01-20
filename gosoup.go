@@ -56,17 +56,17 @@ func (element *Element) FindByAttributes(attributes Attributes) *Element {
 	return foundElement
 }
 
-// FindAll method returns all occurrences of the nodes with the given tagName and attributes
+// FindAll method returns all nodes with the given tagName and attributes
 func (element *Element) FindAll(tagName string, attributes Attributes) []*Element {
 	return findAll(element.Node, tagName, attributes, true, true)
 }
 
-// FindAllByTag method returns all occurrences of the nodes with the given tagName
+// FindAllByTag method returns all nodes with the given tagName
 func (element *Element) FindAllByTag(tagName string) []*Element {
 	return findAll(element.Node, tagName, nil, true, false)
 }
 
-// FindAllByAttributes method returns all occurrences of the nodes with the given attributes
+// FindAllByAttributes method returns all nodes with the given attributes
 func (element *Element) FindAllByAttributes(attributes Attributes) []*Element {
 	return findAll(element.Node, "", attributes, false, true)
 }
