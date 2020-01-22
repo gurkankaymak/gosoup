@@ -2,6 +2,7 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/gurkankaymak/gosoup)](https://goreportcard.com/report/github.com/gurkankaymak/gosoup)
 [![GoDoc](https://godoc.org/github.com/gurkankaymak/gosoup?status.svg)](https://godoc.org/github.com/gurkankaymak/gosoup)
+[![Build Status](https://travis-ci.org/gurkankaymak/gosoup.svg)](https://travis-ci.org/gurkankaymak/gosoup)
 
 Lightweight go library for pulling data out of HTML
 
